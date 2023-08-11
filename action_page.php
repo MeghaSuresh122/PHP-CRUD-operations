@@ -30,6 +30,13 @@ if(isset($_POST['update_teacher']))
     $phoneno=mysqli_real_escape_string($con,$_POST['phoneno']);
     $subject=mysqli_real_escape_string($con,$_POST['subject']);
 
+    if($age>110 || $age<1)
+    {
+        $_SESSION['message']="Incorrect age format, data not updated";
+        header("Location: teacher-update.php");
+        exit(0);
+    }
+
     $query="UPDATE teachers SET name='$name',age='$age',phoneno='$phoneno',subject='$subject' WHERE id='$teacher_id'";
     $run_query=mysqli_query($con,$query);
     if($run_query)
@@ -52,6 +59,19 @@ if(isset($_POST['add_teacher']))
     $age=mysqli_real_escape_string($con,$_POST['age']);
     $phoneno=mysqli_real_escape_string($con,$_POST['phoneno']);
     $subject=mysqli_real_escape_string($con,$_POST['subject']);
+
+    if(!is_null($name))
+    {
+        $_SESSION['message']="Enter a name, data not added";
+        header("Location: teacher-add.php");
+        exit(0);
+    }
+    if($age>110 || $age<1)
+    {
+        $_SESSION['message']="Incorrect age format, data not added";
+        header("Location: teacher-add.php");
+        exit(0);
+    }
 
     $query="INSERT INTO teachers (name,age,phoneno,subject) VALUES ('$name','$age','$phoneno','$subject')";
     $run_query=mysqli_query($con,$query);
